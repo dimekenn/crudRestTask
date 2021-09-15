@@ -1,0 +1,179 @@
+syntax = "proto3";
+
+package proto;
+
+option go_package = "/proto;pb";
+
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+service CRUDService{
+  rpc CreateUser(CreateUserReq) returns (CreateUserRes){
+    option (google.api.http) = {
+      post:"/users";
+      body:"*";
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Create user";
+      operation_id: "CreateUser";
+      tags: "User";
+      responses: {
+        key: "201"
+        value: {
+          description: "User created"
+          schema: {
+            json_schema: {
+              ref: ".proto.CreateUserRes"
+            }
+          }
+        }
+      }
+      responses: {
+        key: "404"
+        value: {
+          description: "User exists"
+          schema: {
+            json_schema: {
+              ref: ".proto.ErrorNotFound"
+            }
+          }
+        }
+      }
+      responses: {
+        key: "500"
+        value: {
+          description: "Internal server error"
+          schema: {
+            json_schema: {
+              ref: ".proto.Error"
+            }
+          }
+        }
+      }
+    };
+  };
+  rpc GetUserByUUID(GetUserByUUIDReq) returns (GetUserByUUIDRes){
+    option (google.api.http) = {
+      get:"/users/{uuid}";
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Get user";
+      operation_id: "GetUserByUUID";
+      tags: "User";
+      responses: {
+        key: "200"
+        value: {
+          description: "User found"
+          schema: {
+            json_schema: {
+              ref: ".proto.GetUserByUUIDRes"
+            }
+          }
+        }
+      }
+      responses: {
+        key: "404"
+        value: {
+          description: "User not found"
+          schema: {
+            json_schema: {
+              ref: ".proto.ErrorNotFound"
+            }
+          }
+        }
+      }
+      responses: {
+        key: "500"
+        value: {
+          description: "Internal server error"
+          schema: {
+            json_schema: {
+              ref: ".proto.Error"
+            }
+          }
+        }
+      }
+    };
+  };
+  rpc UpdateUserByUUID(UpdateUserByUUIDReq) returns (UpdateUserByUUIDRes){
+    option (google.api.http) = {
+      put:"/users";
+      body:"*";
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Update user";
+      operation_id: "UpdateUserByUUID";
+      tags: "User";
+      responses: {
+        key: "200"
+        value: {
+          description: "User updated"
+          schema: {
+            json_schema: {
+              ref: ".proto.UpdateUserByUUIDRes"
+            }
+          }
+        }
+      }
+      responses: {
+        key: "404"
+        value: {
+          description: "User not found"
+          schema: {
+            json_schema: {
+              ref: ".proto.ErrorNotFound"
+            }
+          }
+        }
+      }
+      responses: {
+        key: "500"
+        value: {
+          description: "Internal server error"
+          schema: {
+            json_schema: {
+              ref: ".proto.Error"
+            }
+          }
+        }
+      }
+    };
+  };
+}
+
+message CreateUserReq{
+  string first_name = 1;
+  string last_name = 2;
+  string email = 3;
+  int32 age = 4;
+}
+
+message CreateUserRes{
+  string msg = 1;
+}
+
+message GetUserByUUIDReq{
+  string uuid = 1;
+}
+
+message GetUserByUUIDRes{
+  string uuid = 1;
+  string first_name = 2;
+  string last_name = 3;
+  string email = 4;
+  int32 age = 5;
+  string created_date = 6;
+}
+
+message UpdateUserByUUIDReq{
+  string uuid = 1;
+  string first_name = 2;
+  string last_name = 3;
+  string email = 4;
+  int32 age = 5;
+}
+
+message UpdateUserByUUIDRes{
+  string msg = 1;
+}
+

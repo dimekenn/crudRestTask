@@ -1,0 +1,4 @@
+{
+  "port": ":9091",
+  "db_url": "postgresql://postgres:qwe@localhost:5433/cruddb?sslmode=disable"
+}
